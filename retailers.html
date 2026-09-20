@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retailers - EMI Locker</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  body {
+    background: #0f172a;
+    color: #fff;
+    padding: 15px;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .header a {
+    color: #facc15;
+    text-decoration: none;
+    font-size: 24px;
+    margin-right: 15px;
+  }
+  .header h1 {
+    font-size: 18px;
+    color: #facc15;
+  }
+  .retailer-card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #3b82f6; /* Blue border for retailers */
+  }
+  .retailer-card h3 {
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #fff;
+  }
+  .retailer-card p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 3px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 11px;
+    margin-top: 5px;
+    background: #3b82f6;
+    color: #fff;
+  }
+  .stats-mini {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .stats-mini div {
+    background: #0f172a;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #facc15;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header with Back Button -->
+  <div class="header">
+    <a href="index.html">←</a>
+    <h1>All Retailers</h1>
+  </div>
+
+  <!-- Retailer 1 -->
+  <div class="retailer-card">
+    <h3>🏪 Sharma Mobile Point</h3>
+    <p>Owner: Rajesh Sharma</p>
+    <p>Location: Noida, Sector 18</p>
+    <div class="stats-mini">
+      <div>Total: 45</div>
+      <div>Active: 40</div>
+      <div>Locked: 5</div>
+    </div>
+    <span class="badge">Verified</span>
+  </div>
+
+  <!-- Retailer 2 -->
+  <div class="retailer-card">
+    <h3>🏪 Verma Electronics</h3>
+    <p>Owner: Priya Verma</p>
+    <p>Location: Delhi, Rohini</p>
+    <div class="stats-mini">
+      <div>Total: 30</div>
+      <div>Active: 28</div>
+      <div>Locked: 2</div>
+    </div>
+    <span class="badge">Verified</span>
+  </div>
+
+  <!-- Retailer 3 -->
+  <div class="retailer-card">
+    <h3>🏪 Khan Mobile Center</h3>
+    <p>Owner: Abraz Khan</p>
+    <p>Location: Mumbai, Andheri</p>
+    <div class="stats-mini">
+      <div>Total: 60</div>
+      <div>Active: 50</div>
+      <div>Locked: 10</div>
+    </div>
+    <span class="badge">Verified</span>
+  </div>
+
+</body>
+</html>

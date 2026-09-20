@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments - EMI Locker</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  body {
+    background: #0f172a;
+    color: #fff;
+    padding: 15px;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .header a {
+    color: #facc15;
+    text-decoration: none;
+    font-size: 24px;
+    margin-right: 15px;
+  }
+  .header h1 {
+    font-size: 18px;
+    color: #facc15;
+  }
+  .summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  .summary-card {
+    background: #1e293b;
+    padding: 12px;
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+  }
+  .summary-card h3 {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 5px;
+  }
+  .summary-card p {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .paid-amount { color: #22c55e; }
+  .pending-amount { color: #ef4444; }
+
+  .payment-card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #3b82f6;
+  }
+  .payment-card h3 {
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  .payment-card p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 3px;
+  }
+  .amount-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .amount {
+    font-size: 16px;
+    font-weight: bold;
+    color: #facc15;
+  }
+  .status-badge {
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: bold;
+  }
+  .paid {
+    background: #22c55e;
+    color: #fff;
+  }
+  .pending {
+    background: #f59e0b;
+    color: #fff;
+  }
+  .overdue {
+    background: #ef4444;
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header with Back Button -->
+  <div class="header">
+    <a href="index.html">←</a>
+    <h1>Payments History</h1>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary">
+    <div class="summary-card">
+      <h3>Total Collected</h3>
+      <p class="paid-amount">₹18,50,000</p>
+    </div>
+    <div class="summary-card">
+      <h3>Pending Amount</h3>
+      <p class="pending-amount">₹6,00,000</p>
+    </div>
+  </div>
+
+  <!-- Payment 1 -->
+  <div class="payment-card">
+    <h3>💰 Rahul Sharma</h3>
+    <p>Samsung Galaxy A14 • EMI Month 5/12</p>
+    <p>Date: 15 Sep 2026</p>
+    <div class="amount-row">
+      <span class="amount">₹2,500</span>
+      <span class="status-badge paid">Paid</span>
+    </div>
+  </div>
+
+  <!-- Payment 2 -->
+  <div class="payment-card" style="border-left-color: #f59e0b;">
+    <h3>💰 Priya Verma</h3>
+    <p>Redmi Note 12 • EMI Month 3/10</p>
+    <p>Date: 18 Sep 2026</p>
+    <div class="amount-row">
+      <span class="amount">₹1,800</span>
+      <span class="status-badge pending">Pending</span>
+    </div>
+  </div>
+
+  <!-- Payment 3 -->
+  <div class="payment-card" style="border-left-color: #ef4444;">
+    <h3>💰 Amit Kumar</h3>
+    <p>Realme Narzo 60 • EMI Month 8/12</p>
+    <p>Date: 10 Sep 2026</p>
+    <div class="amount-row">
+      <span class="amount">₹3,200</span>
+      <span class="status-badge overdue">Overdue</span>
+    </div>
+  </div>
+
+  <!-- Payment 4 -->
+  <div class="payment-card">
+    <h3>💰 Sneha Patel</h3>
+    <p>Vivo Y28 • EMI Month 2/6</p>
+    <p>Date: 20 Sep 2026</p>
+    <div class="amount-row">
+      <span class="amount">₹2,000</span>
+      <span class="status-badge paid">Paid</span>
+    </div>
+  </div>
+
+</body>
+</html>

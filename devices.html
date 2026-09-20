@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devices - EMI Locker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+  body { background: #0f172a; color: #fff; padding: 15px; }
+  .header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+  .header .left { display: flex; align-items: center; }
+  .header a { color: #facc15; text-decoration: none; font-size: 24px; margin-right: 15px; }
+  .header h1 { font-size: 18px; color: #facc15; }
+  .btn-add { background: #22c55e; color: #fff; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: bold; }
+
+  /* Search Bar */
+  .search-box {
+    width: 100%; padding: 12px 15px; border-radius: 10px; border: 1px solid #334155;
+    background: #1e293b; color: #fff; font-size: 14px; margin-bottom: 15px; outline: none;
+  }
+  .search-box:focus { border-color: #facc15; }
+
+  /* Device Cards */
+  .device-card {
+    background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 10px;
+    border-left: 4px solid #22c55e; position: relative;
+  }
+  .device-card.locked { border-left-color: #ef4444; }
+  .device-card h3 { font-size: 15px; margin-bottom: 5px; }
+  .device-card p { font-size: 12px; color: #94a3b8; margin-bottom: 3px; }
+  .status { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 11px; margin-top: 5px; }
+  .active { background: #22c55e; color: #fff; }
+  .locked { background: #ef4444; color: #fff; }
+
+  /* Edit/Delete Buttons */
+  .action-btns {
+    position: absolute; top: 15px; right: 15px; display: flex; gap: 8px;
+  }
+  .btn-icon {
+    background: #334155; border: none; color: #fff; padding: 6px 10px;
+    border-radius: 6px; font-size: 12px; cursor: pointer;
+  }
+  .btn-icon.edit { background: #3b82f6; }
+  .btn-icon.delete { background: #ef4444; }
+
+  .no-result { text-align: center; color: #94a3b8; font-size: 14px; margin-top: 30px; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="left">
+      <a href="index.html">←</a>
+      <h1>All Devices</h1>
+    </div>
+    <a href="add-device.html" class="btn-add">➕ Add</a>
+  </div>
+
+  <!-- Search Bar -->
+  <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search by Device, Customer or IMEI...">
+
+  <!-- Devices list yahan JavaScript se aayegi -->
+  <div id="deviceList"></div>
+
+  <script>
+    var container = document.getElementById("deviceList");
+
+    // 1. Default devices
+    var defaultDevices = [
+      { id: "samsung", name: "Samsung Galaxy A14", customer: "Rahul Sharma", imei: "356938035643809" },
+      { id: "redmi",   name: "Redmi Note 12",      customer: "Priya Verma",  imei: "356938035643810" },
+      { id: "realme",  name: "Realme Narzo 60",    customer: "Amit Kumar",   imei: "356938035643811" },
+      { id: "vivo",    name: "Vivo Y28",           customer: "Sneha Patel",  imei: "356938035643812" }
+    ];
+
+    // 2. Add-device se aayi nayi devices
+    var newDevices = JSON.parse(localStorage.getItem("allDevices")) || [];
+
+    // 3. Dono ko jod do
+    var allDevices = defaultDevices.concat(newDevices);
+
+    // 4. Render function (dubara draw karta hai)
+    function renderDevices(list) {
+      container.innerHTML = "";
+
+      if (list.length === 0) {
+        container.innerHTML = '<p class="no-result">❌ No devices found!</p>';
+        return;
+      }
+
+      list.forEach(function (dev) {
+        var status = localStorage.getItem("status_" + dev.id);
+        var isLocked = (status === "LOCKED");
+
+        var card = document.createElement("div");
+        card.className = "device-card" + (isLocked ? " locked" : "");
+
+        card.innerHTML = `
+          <a href="device-detail.html?device=${dev.id}" style="text-decoration:none; color:inherit;">
+            <h3>📱 ${dev.name}</h3>
+            <p>Customer: ${dev.customer}</p>
+            <p>IMEI: ${dev.imei}</p>
+            <span class="status ${isLocked ? 'locked' : 'active'}">${isLocked ? 'Locked' : 'Active'}</span>
+          </a>
+          <div class="action-btns">
+            <button class="btn-icon edit" onclick="editDevice('${dev.id}')">✏️</button>
+            <button class="btn-icon delete" onclick="deleteDevice('${dev.id}')">🗑️</button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    // 5. Pehli baar render karo
+    renderDevices(allDevices);
+
+    // 6. Search filter
+    document.getElementById("searchInput").addEventListener("input", function (e) {
+      var text = e.target.value.toLowerCase();
+      var filtered = allDevices.filter(function (dev) {
+        return dev.name.toLowerCase().includes(text) ||
+               dev.customer.toLowerCase().includes(text) ||
+               dev.imei.includes(text);
+      });
+      renderDevices(filtered);
+    });
+
+    // 7. Delete Device
+    function deleteDevice(id) {
+      if (!confirm("🗑️ Are you sure you want to delete this device?")) return;
+
+      var newList = JSON.parse(localStorage.getItem("allDevices")) || [];
+      newList = newList.filter(function (d) { return d.id !== id; });
+      localStorage.setItem("allDevices", JSON.stringify(newList));
+
+      // LocalStorage se status bhi hatao
+      localStorage.removeItem("status_" + id);
+
+      // Page refresh karo
+      location.reload();
+    }
+
+    // 8. Edit Device
+    function editDevice(id) {
+      var newList = JSON.parse(localStorage.getItem("allDevices")) || [];
+      var dev = newList.find(function (d) { return d.id === id; });
+
+      // Default device ko edit karne ke liye rok do (abhi ke liye)
+      if (!dev) {
+        alert("ℹ️ Default devices abhi edit nahi ho sakte.\n\nSirf naye add kiye gaye devices edit ho sakte hain.");
+        return;
+      }
+
+      var newName = prompt("Device Name:", dev.name);
+      if (newName === null) return;
+      var newCustomer = prompt("Customer Name:", dev.customer);
+      if (newCustomer === null) return;
+
+      dev.name = newName;
+      dev.customer = newCustomer;
+      localStorage.setItem("allDevices", JSON.stringify(newList));
+
+      alert("✅ Device updated!");
+      location.reload();
+    }
+  </script>
+
+</body>
+</html>
