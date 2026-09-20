@@ -49,12 +49,15 @@
 <body>
 
   <div class="header">
-    <div class="left">
-      <a href="index.html">←</a>
-      <h1>All Devices</h1>
-    </div>
+  <div class="left">
+    <a href="index.html">←</a>
+    <h1>All Devices</h1>
+  </div>
+  <div style="display: flex; gap: 8px;">
+    <button onclick="exportDevices()" class="btn-add" style="background: #3b82f6; border: none; cursor: pointer; color: #fff;">📥 Export</button>
     <a href="add-device.html" class="btn-add">➕ Add</a>
   </div>
+</div>
 
   <!-- Search Bar -->
   <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search by Device, Customer or IMEI...">
@@ -164,6 +167,24 @@
       alert("✅ Device updated!");
       location.reload();
     }
+   // 9. Export Devices to CSV
+function exportDevices() {
+  var csv = "Device Name,Customer Name,IMEI,Status\n";
+
+  allDevices.forEach(function (dev) {
+    var status = localStorage.getItem("status_" + dev.id) === "LOCKED" ? "Locked" : "Active";
+    csv += `"${dev.name}","${dev.customer}","${dev.imei}","${status}"\n`;
+  });
+
+  // CSV file download karo
+  var blob = new Blob([csv], { type: "text/csv" });
+  var url = window.URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "EMI_Locker_Devices.csv";
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
   </script>
 
 </body>
