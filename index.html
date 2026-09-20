@@ -3,124 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EMI Locker - Admin Panel</title>
+<title>Payments - EMI Locker</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+  body { background: #0f172a; color: #fff; padding: 15px; }
+  .header { display: flex; align-items: center; background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+  .header a { color: #facc15; text-decoration: none; font-size: 24px; margin-right: 15px; }
+  .header h1 { font-size: 18px; color: #facc15; }
+
+  /* Summary Cards */
+  .summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+  .summary-card { background: #1e293b; padding: 12px; border-radius: 10px; border-left: 4px solid #3b82f6; }
+  .summary-card h3 { font-size: 11px; color: #94a3b8; margin-bottom: 5px; }
+  .summary-card p { font-size: 18px; font-weight: bold; }
+  .paid-amount { color: #22c55e; }
+  .pending-amount { color: #ef4444; }
+
+  /* Payment Cards */
+  .payment-card { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #3b82f6; }
+  .payment-card h3 { font-size: 15px; margin-bottom: 5px; }
+  .payment-card p { font-size: 12px; color: #94a3b8; margin-bottom: 3px; }
+  .amount-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .amount { font-size: 16px; font-weight: bold; color: #facc15; }
+  .status-badge { padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; }
+  .paid { background: #22c55e; color: #fff; }
+  .pending { background: #f59e0b; color: #fff; }
+  .overdue { background: #ef4444; color: #fff; }
+
+  /* Action Button */
+  .btn-pay {
+    width: 100%; padding: 8px; margin-top: 10px; background: #22c55e; color: #fff;
+    border: none; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;
   }
-  body {
-    background: #0f172a;
-    color: #fff;
-    padding: 15px;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #1e293b;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-  }
-  .header h1 {
-    font-size: 18px;
-    color: #facc15;
-  }
-  .header span {
-    font-size: 12px;
-    color: #94a3b8;
-  }
-  .stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-  .card {
-    background: #1e293b;
-    padding: 15px;
-    border-radius: 10px;
-    border-left: 4px solid #facc15;
-  }
-  .card h3 {
-    font-size: 12px;
-    color: #94a3b8;
-    margin-bottom: 5px;
-  }
-  .card p {
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-  }
-  .menu {
-    background: #1e293b;
-    border-radius: 10px;
-    padding: 10px;
-  }
-  .menu-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px;
-    border-bottom: 1px solid #334155;
-    font-size: 14px;
-  }
-  .menu-item:last-child {
-    border-bottom: none;
-  }
-  .menu-item span {
-    color: #facc15;
-  }
+  .btn-pay:hover { background: #16a34a; }
+  .btn-paid-disabled { background: #475569; cursor: not-allowed; }
 </style>
 </head>
 <body>
 
-  <!-- Header -->
   <div class="header">
-    <h1>EMI LOCKER</h1>
-    <span>Admin Panel</span>
+    <a href="index.html">←</a>
+    <h1>Payments History</h1>
   </div>
 
-  <!-- Stats Cards -->
-  <div class="stats">
-    <div class="card">
-      <h3>Total Devices</h3>
-      <p>12,642</p>
+  <!-- Summary Cards -->
+  <div class="summary">
+    <div class="summary-card">
+      <h3>Total Collected</h3>
+      <p class="paid-amount" id="totalCollected">₹0</p>
     </div>
-    <div class="card">
-      <h3>Active Devices</h3>
-      <p>10,987</p>
-    </div>
-    <div class="card">
-      <h3>Locked Devices</h3>
-      <p>1,655</p>
-    </div>
-    <div class="card">
-      <h3>Total Revenue</h3>
-      <p>₹24,50,000</p>
+    <div class="summary-card">
+      <h3>Pending Amount</h3>
+      <p class="pending-amount" id="totalPending">₹0</p>
     </div>
   </div>
 
-  <!-- Menu -->
-  <div class="menu">
-    <a href="devices.html" style="text-decoration: none; color: inherit;">
-  <div class="menu-item">Devices <span>›</span></div>
-</a>
-    
-     <a href="retailers.html" style="text-decoration: none; color: inherit;">
-  <div class="menu-item">Retailers <span>›</span></div>
-</a>
-    <a href="payments.html" style="text-decoration: none; color: inherit;">
-  <div class="menu-item">Payments <span>›</span></div>
-</a>
-    <a href="reports.html" style="text-decoration: none; color: inherit;">
-  <div class="menu-item">Reports <span>›</span></div>
-</a>
-   <a href="settings.html" style="text-decoration: none; color: inherit;">
-  <div class="menu-item">Settings <span>›</span></div>
-</a>
+  <!-- Payments List -->
+  <div id="paymentsList"></div>
+
+  <script>
+    // Default payments
+    var defaultPayments = [
+      { id: "p1", customer: "Rahul Sharma", device: "Samsung Galaxy A14", amount: 2500, date: "15 Sep 2026", status: "Paid" },
+      { id: "p2", customer: "Priya Verma", device: "Redmi Note 12", amount: 1800, date: "18 Sep 2026", status: "Pending" },
+      { id: "p3", customer: "Amit Kumar", device: "Realme Narzo 60", amount: 3200, date: "10 Sep 2026", status: "Overdue" },
+      { id: "p4", customer: "Sneha Patel", device: "Vivo Y28", amount: 2000, date: "20 Sep 2026", status: "Paid" }
+    ];
+
+    // LocalStorage se saved payments lo, warna default use karo
+    var saved = localStorage.getItem("paymentData");
+    var payments = saved ? JSON.parse(saved) : defaultPayments;
+
+    var container = document.getElementById("paymentsList");
+
+    function savePayments() {
+      localStorage.setItem("paymentData", JSON.stringify(payments));
+    }
+
+    function renderPayments() {
+      container.innerHTML = "";
+      var totalPaid = 0;
+      var totalPending = 0;
+
+      payments.forEach(function (p) {
+        var badgeClass = p.status.toLowerCase();
+
+        if (p.status === "Paid") totalPaid += p.amount;
+        else totalPending += p.amount;
+
+        var div = document.createElement("div");
+        div.className = "payment-card";
+        if (p.status === "Pending") div.style.borderLeftColor = "#f59e0b";
+        if (p.status === "Overdue") div.style.borderLeftColor = "#ef4444";
+
+        var btnHTML = "";
+        if (p.status !== "Paid") {
+          btnHTML = `<button class="btn-pay" onclick="markPaid('${p.id}')">✅ Mark as Paid</button>`;
+        } else {
+          btnHTML = `<button class="btn-pay btn-paid-disabled" disabled>✔️ Already Paid</button>`;
+        }
+
+        div.innerHTML = `
+          <h3>💰 ${p.customer}</h3>
+          <p>${p.device}</p>
+          <p>Date: ${p.date}</p>
+          <div class="amount-row">
+            <span class="amount">₹${p.amount.toLocaleString()}</span>
+            <span class="status-badge ${badgeClass}">${p.status}</span>
+          </div>
+          ${btnHTML}
+        `;
+
+        container.appendChild(div);
+      });
+
+      document.getElementById("totalCollected").innerHTML = "₹" + totalPaid.toLocaleString();
+      document.getElementById("totalPending").innerHTML = "₹" + totalPending.toLocaleString();
+    }
+
+    function markPaid(id) {
+      var p = payments.find(function (item) { return item.id === id; });
+      if (!p) return;
+
+      if (confirm("✅ Confirm payment received for " + p.customer + " (₹" + p.amount + ")?")) {
+        p.status = "Paid";
+        savePayments();
+        renderPayments();
+        alert("✅ Payment marked as Paid!");
+      }
+    }
+
+    renderPayments();
+  </script>
 
 </body>
 </html>
