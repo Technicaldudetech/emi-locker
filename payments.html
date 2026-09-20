@@ -7,11 +7,12 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
   body { background: #0f172a; color: #fff; padding: 15px; }
-  .header { display: flex; align-items: center; background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+  .header { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+  .header .left { display: flex; align-items: center; }
   .header a { color: #facc15; text-decoration: none; font-size: 24px; margin-right: 15px; }
   .header h1 { font-size: 18px; color: #facc15; }
+  .btn-export { background: #3b82f6; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; }
 
-  /* Summary Cards */
   .summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
   .summary-card { background: #1e293b; padding: 12px; border-radius: 10px; border-left: 4px solid #3b82f6; }
   .summary-card h3 { font-size: 11px; color: #94a3b8; margin-bottom: 5px; }
@@ -19,7 +20,6 @@
   .paid-amount { color: #22c55e; }
   .pending-amount { color: #ef4444; }
 
-  /* Payment Cards */
   .payment-card { background: #1e293b; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #3b82f6; }
   .payment-card h3 { font-size: 15px; margin-bottom: 5px; }
   .payment-card p { font-size: 12px; color: #94a3b8; margin-bottom: 3px; }
@@ -30,26 +30,21 @@
   .pending { background: #f59e0b; color: #fff; }
   .overdue { background: #ef4444; color: #fff; }
 
-  /* Action Button */
-  .btn-pay {
-    width: 100%; padding: 8px; margin-top: 10px; background: #22c55e; color: #fff;
-    border: none; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer;
-  }
+  .btn-pay { width: 100%; padding: 8px; margin-top: 10px; background: #22c55e; color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
   .btn-pay:hover { background: #16a34a; }
   .btn-paid-disabled { background: #475569; cursor: not-allowed; }
 </style>
 </head>
 <body>
 
-  <div class="header" style="justify-content: space-between;">
-    <div style="display: flex; align-items: center;">
+  <div class="header">
+    <div class="left">
       <a href="index.html">←</a>
       <h1>Payments History</h1>
     </div>
-    <button onclick="exportPayments()" style="background: #3b82f6; color: #fff; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer;">📥 Export</button>
+    <button onclick="exportPayments()" class="btn-export">📥 Export</button>
   </div>
 
-  <!-- Summary Cards -->
   <div class="summary">
     <div class="summary-card">
       <h3>Total Collected</h3>
@@ -61,11 +56,9 @@
     </div>
   </div>
 
-  <!-- Payments List -->
   <div id="paymentsList"></div>
 
   <script>
-    // Default payments
     var defaultPayments = [
       { id: "p1", customer: "Rahul Sharma", device: "Samsung Galaxy A14", amount: 2500, date: "15 Sep 2026", status: "Paid" },
       { id: "p2", customer: "Priya Verma", device: "Redmi Note 12", amount: 1800, date: "18 Sep 2026", status: "Pending" },
@@ -73,7 +66,6 @@
       { id: "p4", customer: "Sneha Patel", device: "Vivo Y28", amount: 2000, date: "20 Sep 2026", status: "Paid" }
     ];
 
-    // LocalStorage se saved payments lo, warna default use karo
     var saved = localStorage.getItem("paymentData");
     var payments = saved ? JSON.parse(saved) : defaultPayments;
 
@@ -90,7 +82,6 @@
 
       payments.forEach(function (p) {
         var badgeClass = p.status.toLowerCase();
-
         if (p.status === "Paid") totalPaid += p.amount;
         else totalPending += p.amount;
 
@@ -127,7 +118,6 @@
     function markPaid(id) {
       var p = payments.find(function (item) { return item.id === id; });
       if (!p) return;
-
       if (confirm("✅ Confirm payment received for " + p.customer + " (₹" + p.amount + ")?")) {
         p.status = "Paid";
         savePayments();
@@ -136,14 +126,11 @@
       }
     }
 
-    // Export Payments to CSV
     function exportPayments() {
       var csv = "Customer,Device,Amount,Date,Status\n";
-
       payments.forEach(function (p) {
         csv += `"${p.customer}","${p.device}","${p.amount}","${p.date}","${p.status}"\n`;
       });
-
       var blob = new Blob([csv], { type: "text/csv" });
       var url = window.URL.createObjectURL(blob);
       var a = document.createElement("a");
